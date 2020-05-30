@@ -10,7 +10,7 @@ Calculating question difficulty is an important factor in test creation and ques
 
 100 questions 100 attempts :
   
--Total Question Count = 100
+- Total Question Count = 100
 
 -Record Start Index : 1
 

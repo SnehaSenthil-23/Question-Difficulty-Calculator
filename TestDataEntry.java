@@ -1,4 +1,3 @@
-package jdbc;
 
 // This is a data entry code snippet for inserting 1 million test records
 // This will add question information entry to the database

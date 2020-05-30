@@ -2,12 +2,10 @@
 
 A repository for calculating question difficulty
 
----
 # Project Description
 
 Calculating question difficulty is an important factor in test creation and question analysis. In order to implement this, a Database table is created for the given question parameters. The questions are read from the database table by creating connection with oracle database by using Java Database Connectivity. The question difficulty calculator consists of maximum weightage for each question parameters which adds to a total of 100. Using the difficulty is calculated with choosing the necessary parameters and question rating is returned as a percentage ratio. With the calculated question rating, the difficulty of each question is updated to the database table as Easy/Medium/Hard using batch processing to improve the performance. Thus, the end result will classify the difficulty of each question which can be retrieved for further enhancement.
 
----
 # Performace Metrics
 
 100 questions 100 attempts :
@@ -35,9 +33,7 @@ Final Time Start (s) : 1590828877
 Final Time End (s) : 1590828955
 Final Time Elapsed (s) : 78
 
----
 # Contributors 
 
  - Sneha S <snehasenthil.ss@gmail.com> 
  
----

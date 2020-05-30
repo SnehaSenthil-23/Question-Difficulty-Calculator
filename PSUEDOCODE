@@ -1,0 +1,438 @@
+QUESTION DIFFICULTY CALCULATION :
+	{
+	In the main function
+	
+		Call initDB method
+		
+		Initialize startIndex to 0
+		
+		Initialize endIndex to 10000
+		
+		while startIndex <= totalQuestionCount
+			
+			Call readQuestionInfofromDB method
+			
+			Call calculateQuestionDifficulty method
+			
+			Update startIndex = endIndex + 1
+			
+			Increment endIndex by 10000
+		
+		end	
+	}
+	
+	
+QUESTION INFORMATION : 
+	{
+		function initDB() {
+			
+			This method initializes the database table questionInfo by creating a
+	 		connection with the oracle driver with the oracle user name and password
+	 		in order to access the database
+	 	
+	 		end
+		}
+		
+		function readQuestionCountFromDB() {
+		
+			This method counts the number of questions
+			
+			Return the count
+			
+			end
+		}
+		
+		function readQuestionInfoFromDB() {
+		
+			This method gets the question information from the database for
+	 		calculating question difficulty for each question and stores it in a list
+	 		
+	 		end
+		}	
+		
+		function calculateQuestionDifficulty() {
+		
+			Calculates the question difficulty based on the question parameters that
+			adds up every parameter's value to give a result in range (1 - 100)
+			
+			Call updateQuestionRatingOnDB method by passing the questionId and 
+			questionRating that updates the calculated questionRating to the
+			corresponding questionId
+			
+			end
+		}
+		
+		function updateQuestionRatingOnDB(questionId, questionRating) {
+			
+			Initialize the result to 'M' 
+			
+			if result is less than 30
+				
+				then result is updated to 'E'
+				
+			else 
+				
+				result is updated to 'H'
+				
+			This method updates the questionRating to the database for the given
+	 		question id by batch processing
+			
+			end
+		}
+			
+		end
+	}
+	
+QUESTION DIFFICULTY CALCULATOR : 
+	{		
+		
+		function calculateQuestionDifficulty() {
+			
+			Initialize questionRating to 0
+			
+			Add questionRating to the value returned by calling the method calculateQuestionType
+			Add questionRating to the value returned by calling the method calculateAssignedDifficulty
+			Add questionRating to the value returned by calling the method calculateTimeTaken
+			Add questionRating to the value returned by calling the method calculateTotalNumberOfStudents
+			
+			if questionType is equal to QUESTIONTYPE_MCQ 
+				then Add questionRating to the value returned by calling the method calculateAnswerChangedCount
+				
+			else if questionType is equal to QUESTIONTYPE_FILLUP 
+				then Add questionRating to the value returned by calling the method calculateAnswerCompiledCount 
+				then Add questionRating to the value returned by calling the method calculateProgrammingLanguageUsed
+			
+			Add questionRating to the value returned by calling the method calculateTotalNumberOfStudents 
+			Add questionRating to the value returned by calling the method calculateFeedbackRating
+			Add questionRating to the value returned by calling the method calculateNumberOfStudentsAnsweredCorrect
+			Add questionRating to the value returned by calling the method calculateNumberOfStudentsAnsweredWrong
+			Add questionRating to the value returned by calling the method calculateNumberOfStudentsAnsweredPartial
+			Add questionRating to the value returned by method calculateMaxMarks
+			
+			end
+		}
+		
+		DECLARE CONSTANT RATIO_QUESTIONTYPE = 10
+		
+		function calculateQuestionType() {
+			
+			Initialize the difficulty to 0;
+			
+			if questionType equals "MCQ"
+				
+				then assign difficulty to 0
+				
+			if questionType equals "FILLUP"
+				
+				then assign difficulty to 0.5
+				
+			if questionType equals "PROGRAMMING"
+				
+				then assign difficulty to 0.75
+			
+			if questionType equals "MATCHTHEFOLLOWING"
+			
+				then assign difficulty to 0.3
+			
+			return difficulty * RATIO_QUESTIONTYPE
+		}
+		
+		DECLARE CONSTANT RATIO_QUESTIONASSIGNEDDIFFICULTY = 10
+		
+		function calculateQuestionType() {
+			
+			Initialize the difficulty to 0
+			
+			if questionType equals "EASY"
+				
+				then assign difficulty to 0.15
+				
+			if questionType equals "MEDIUM"
+				
+				then assign difficulty to 0.55
+				
+			if questionType equals "HARD"
+				
+				then assign difficulty to 0.85
+			
+			return difficulty * RATIO_QUESTIONASSIGNEDDIFFICULTY
+		}
+		
+		DECLARE CONSTANT RATIO_TIMETAKEN = 5
+		
+		function calculateTimeTaken() {
+			
+			Initialize the difficulty to 0.2
+			
+			Calculate timeTakenRatio by dividing timeTaken and totalNumberOfStudents
+			
+			if timeTakenRatio > 8 and timeTakenRatio <= 10
+				
+				then assign difficulty to 1.0
+				
+			if timeTakenRatio > 6 and timeTakenRatio <= 8
+				
+				then assign difficulty to 0.8
+				
+			if timeTakenRatio > 4 and timeTakenRatio <= 2
+				
+				then assign difficulty to 0.6
+				
+			if timeTakenRatio > 2 and timeTakenRatio <= 1
+				
+				then assign difficulty to 0.4
+			
+			return difficulty * RATIO_TIMETAKEN
+		}
+		
+		DECLARE CONSTANT RATIO_ANSWERCHANGEDCOUNT = 5
+		
+		function calculateAnswerChangedCount() {
+			
+			Initialize the difficulty to 0.2
+			
+			Calculate answerChangedRatio by dividing answerChangedCount and totalNumberOfStudents
+			
+			if answerChangedRatio >= 8 and answerChangedRatio < 10
+				
+				then assign difficulty to 1.0
+				
+			if answerChangedRatio >= 6 and answerChangedRatio < 8
+				
+				then assign difficulty to 0.8
+				
+			if answerChangedRatio >= 4 and answerChangedRatio < 2
+				
+				then assign difficulty to 0.6
+				
+			if answerChangedRatio >= 2 and answerChangedRatio < 1
+				
+				then assign difficulty to 0.4
+			
+			return difficulty * RATIO_ANSWERCHANGEDCOUNT
+		}
+		
+		DECLARE CONSTANT RATIO_ANSWERCOMPILEDCOUNT = 5
+		
+		function calculateAnswerCompiledCount() {
+			
+			Initialize the difficulty to 0.2
+			
+			Calculate answerCompiledRatio by dividing answerCompiledCount totalNumberOfStudents
+			
+			if answerCompiledRatio >= 8 and answerCompiledRatio < 10
+				
+				then assign difficulty to 1.0
+				
+			if answerCompiledRatio >= 6 and answerCompiledRatio < 8
+				
+				then assign difficulty to 0.8
+				
+			if answerCompiledRatio >= 4 and answerCompiledRatio < 2
+				
+				then assign difficulty to 0.6
+				
+			if answerCompiledRatio >= 2 and answerCompiledRatio < 1
+				
+				then assign difficulty to 0.4
+			
+			return difficulty * RATIO_ANSWERCOMPILEDCOUNT
+		}
+		
+		DECLARE CONSTANT RATIO_HINTSUSED = 5
+		
+		function calculateNumberOfHintsUsed() {
+			
+			Initialize the difficulty to 0.8
+			
+			Calculate hintsUsedRatio by dividing hintsCount and totalNumberOfStudents
+			
+			if hintsUsedRatio == 0 and totalNumberOfStudents == noOfStudentsAnsweredCorrect
+				
+				then assign difficulty to 1.0
+				
+			else if hintsUsedRatio == 1 and totalNumberOfStudents == noOfStudentsAnsweredCorrect
+				
+				then assign difficulty to 0.5
+			
+			else if hintsUsedRatio >= 0.2 and hintsUsedRatio <= 0.4
+			
+				then assign difficulty to 0.3
+				
+			else if hintsUsedRatio >= 0.5 and hintsUsedRatio <= 0.7
+			
+				then assign difficulty to 0.6
+			
+			return difficulty * RATIO_HINTSUSED
+		}
+		
+		DECLARE CONSTANT RATIO_PROGRAMMINGLANGUAGE = 5
+		
+		function calculateProgrammingLanguageUsed() {
+			
+			Initialize the difficulty to 0
+			
+			if questionType equals "C"
+				
+				then assign difficulty to 0.4
+				
+			if questionType equals "C++"
+				
+				then assign difficulty to 0.8
+				
+			if questionType equals "JAVA"
+				
+				then assign difficulty to 0.10
+			
+			return difficulty * RATIO_PROGRAMMINGLANGUAGEUSED
+		}
+		
+		DECLARE CONSTANT RATIO_TOTALNUMBEROFSTUDENTS = 5
+		
+		function CalculateTotalNumberOfStudents() {
+			
+			Initialize difficulty to 0.5
+			
+			if totalNumberOfStudents == 0
+				
+				update difficulty to 1.0
+				
+			return difficulty * RATIO_TOTALNUMBEROFSTUDENTS
+				
+		}
+		
+		DECLARE CONSTANT RATIO_FEEDBACKRATING = 10
+		
+		function calculateFeedbackRating() {
+			
+			Initialize the difficulty to 0
+			
+			Calculate feedbackRatingRatio by dividing feedbackRating and totalNumberOfStudents
+			 
+			if feedbackRatingRatio >= 1 and feedbackRatingRatio < 2
+				
+				then assign difficulty to 0.2
+				
+			if feedbackRatingRatio >= 2 and feedbackRatingRatio < 3
+				
+				then assign difficulty to 0.4
+				
+			if feedbackRatingRatio >= 3 and feedbackRatingRatio < 4
+				
+				then assign difficulty to 0.6
+				
+			if feedbackRatingRatio >= 4 and feedbackRatingRatio < 5
+				
+				then assign difficulty to 0.4
+			
+			return difficulty * RATIO_FEEDBACKRATING
+		}
+		
+		DECLARE CONSTANT RATIO_NOOFSTUDENTSANSWEREDCORRECT = 10
+		
+		function calculateNoOfStudentsAnsweredRight() {
+			
+			Initialize the difficulty to 0.2
+			
+			Calculate noOfStudentsAnsweredCorrectratio by dividing noOfStudentsAnsweredCorrect and totalNumberOfStudents
+			
+			if noOfStudentsAnsweredCorrectratio >= 0.1 and noOfStudentsAnsweredCorrectratio <= 0.2
+				
+				then assign difficulty to 1.0
+				
+			if noOfStudentsAnsweredCorrectratio >= 0.21 and noOfStudentsAnsweredCorrectratio <= 0.4
+				
+				then assign difficulty to 0.8
+				
+			if noOfStudentsAnsweredCorrectratio >= 0.41 and noOfStudentsAnsweredCorrectratio <= 0.6
+				
+				then assign difficulty to 0.6
+				
+			if noOfStudentsAnsweredCorrectratio >= 0.61 and noOfStudentsAnsweredCorrectratio <= 0.8
+				
+				then assign difficulty to 0.4
+			
+			return difficulty * RATIO_NOOFSTUDENTSANSWEREDCORRECT
+		}
+		
+		DECLARE CONSTANT RATIO_NOOFSTUDENTSANSWEREDWRONG = 10
+		
+		function calculateNoOfStudentsAnsweredWrong() {
+			
+			Initialize the difficulty to 1.0
+			
+			Calculate noOfStudentsAnsweredWrongRatio by dividing noOfStudentsAnsweredWrong and totalNumberOfStudents
+			
+			if AnsweredWrongRatio >= 0.1 and AnsweredWrongRatio <= 0.2
+				
+				then assign difficulty to 0.2
+				
+			if AnsweredWrongRatio >= 0.21 and AnsweredWrongRatio <= 0.4
+				
+				then assign difficulty to 0.4
+				
+			if AnsweredWrongRatio >= 0.41 and AnsweredWrongRatio <= 0.6
+				
+				then assign difficulty to 0.6
+				
+			if AnsweredWrongRatio >= 0.61 and AnsweredWrongRatio <= 0.8
+				
+				then assign difficulty to 0.8
+			
+			return difficulty * RATIO_NOOFSTUDENTSANSWEREDWRONG
+		}
+		
+		DECLARE CONSTANT RATIO_NOOFSTUDENTSANSWEREDPARTIAL = 10
+		
+		function calculateNoOfStudentsAnsweredPartial() {
+			
+			Initialize the difficulty to 0.8
+			
+			Calculate AnsweredPartial Ratio by dividing noOfStudentsAnsweredPartial and totalNumberOfStudents
+			
+			if AnsweredPartialRatio >= 0.1 and AnsweredPartialRatio <= 0.2
+				
+				then assign difficulty to 0.1
+				
+			if AnsweredPartialRatio >= 0.21 and AnsweredPartialRatio <= 0.4
+				
+				then assign difficulty to 0.3
+				
+			if AnsweredPartialRatio >= 0.41 and AnsweredPartialRatio <= 0.6
+				
+				then assign difficulty to 0.5
+				
+			if AnsweredPartialRatio >= 0.61 and AnsweredPartialRatio <= 0.8
+				
+				then assign difficulty to 0.7
+			
+			return difficulty * RATIO_NOOFSTUDENTSANSWEREDPARTIAL
+		}
+		
+		DECLARE CONSTANT RATIO_MAXMARKS = 10
+		
+		function calculateMaxMarks() {
+			
+			Initialize the difficulty to 1.0
+			
+			if maxMarks >= 1 and maxMarks <= 20
+				
+				then assign difficulty to 0.2
+				
+			if maxMarks >= 21 and maxMarks <= 40
+				
+				then assign difficulty to 0.4
+				
+			if maxMarks >= 41 and maxMarks <= 60
+				
+				then assign difficulty to 0.6
+				
+			if maxMarks >= 61 and maxMarks <= 80
+				
+				then assign difficulty to 0.8
+			
+			return difficulty * RATIO_MAXMARKS
+		}
+		
+		end
+	}
